@@ -3,7 +3,8 @@ Prosty skrypt segregujący pliki po dacie utworzenia. Sensowne zastosowanie ma w
 
 ## TODO
 1. Generowanie katalogów
-2. ...
+2. Zmiana nazw plików na daty.
+3. 
 
 ## Input
     > tree
