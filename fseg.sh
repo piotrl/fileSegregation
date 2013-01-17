@@ -2,7 +2,6 @@
 
 # generating directories by cretion date of files
 function generate_dir {
-	dir=$1
 	if [ $# -ge 2 ]; then
 		new_dir=$2
 	else
@@ -10,6 +9,8 @@ function generate_dir {
 	fi
 
 	mkdir $new_dir
+
+	# $dir jest globalny, wiec przyjmuje wartosc argumentu $1 z wywolania skryptu
 	cd $dir
 
 
@@ -32,11 +33,13 @@ function error {
 	code=$1
 
 	case $code in
-		0) 	echo $0': brak argumentow.'
-			echo 'Poprawna skladnia: `fseg.sh [KATALOG_ZRODLO] [KATALOG_DOCELOWY]`'
-			;;
-		1) 	echo $0': blad nr 1';; # for the future!
-		*) 	echo 'We like trains';;
+		0)	 echo $0': brak argumentow.'
+			 echo 'Poprawna skladnia: `fseg.sh [KATALOG_ZRODLO] [KATALOG_DOCELOWY]`'
+			 ;;
+		401) echo $0': Brak dostępu do pliku '$1;;
+		403) echo $0': Podany plik nie jest katalogiem';;
+		404) echo $0': Podany plik '$dir' nie istnieje';;
+		*) 	 echo 'We like trains';;
 	esac
 }
 
@@ -48,5 +51,21 @@ function error {
 if [ $# -eq 0 ]; then
 	error 0
 else
-	generate_dir $1 $2
+	dir=$1
+	if [ -e $dir ]; then # File exist?
+
+		if [ -d $dir ]; then # File is a directory?
+
+			if [ -r $dir ]; then # Can we read file?
+
+				generate_dir $dir $2 # we can do it, finally!
+			else
+				error 401
+			fi
+		else
+			error 403
+		fi
+	else
+		error 404
+	fi
 fi
