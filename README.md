@@ -2,11 +2,12 @@
 Prosty skrypt segregujący pliki po dacie utworzenia. Sensowne zastosowanie ma w przypadku dużej ilości plików o losowych nazwach, np. zdjęć na karcie pamięci lub logów serwera;
 
 ## TODO
-1. Generowanie katalogów
-2. Zmiana nazw plików na daty.
-3. 
+1. Zmiana nazw plików na daty. (jako opcja?)
+2. Tworzenie po miesiacach
+3. Opcjonalne tworzenie po dniach
+4.
 
-## Input
+### Before
     > tree
     .
     └── photos
@@ -19,7 +20,7 @@ Prosty skrypt segregujący pliki po dacie utworzenia. Sensowne zastosowanie ma w
         ├── DSM_3346.jpg
     1 directory, 8 files
 
-## Output
+### After
 
     > tree
     .
@@ -36,5 +37,6 @@ Prosty skrypt segregujący pliki po dacie utworzenia. Sensowne zastosowanie ma w
     4 directories, 8 files
 
 ## Uruchamianie
+    bash fseg.sh [KATALOG_DO_SEGREGACJI] [KATALOG_POSEGREGOWANY]
 
 ## Dodatkowe opcje
