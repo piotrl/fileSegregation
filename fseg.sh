@@ -20,6 +20,9 @@ function generate_dir {
 	        fi
           else
 		new_dir='cache'
+		mkdir $new_dir
+		cd $dir
+		search $new_dir; 
 	fi
 }
 
@@ -29,12 +32,13 @@ function search {
     for file in *
     do                   
 		cdate_year=`date +%Y -r $file`
-		if [ -d ../$new_dir/$cdate_year ]; then   
-     
-		    cp $file ../$new_dir/$cdate_year;
-		  else
-		    mkdir ../$new_dir/$cdate_year/
-		    cp $file ../$new_dir/$cdate_year/;
+		if [ -d $new_dir/$cdate_year ]; then   
+     		    cp $file $new_dir/$cdate_year/;
+		    
+		else
+		    mkdir $new_dir/$cdate_year/
+		    cp $file $new_dir/$cdate_year/;
+		   
 		fi
     done
 }
@@ -42,8 +46,9 @@ function search {
 # $dir jest globalny, wiec przyjmuje wartosc argumentu $1 z wywolania skryptu# error handling error handling
 
 function backup {
-
-     echo "backup plikow"
+    name=`date +%F` 
+    cd $new_dir
+    tar -cvzf $name.tar.gz *
 }
 
 function error {
@@ -57,7 +62,8 @@ function error {
 		401) echo $0': Brak dostępu do pliku lub katalogu ';;
 		403) echo $0': Podany plik nie jest katalogiem';;
 		404) echo $0': Podany plik '$dir' nie istnieje';;
-		  *) 	 echo 'We like trains';;
+		405) echo $0': Brak pliku do wyslania ';;
+	          *) 	 echo 'We like trains';;
 	esac
 }
 
@@ -75,7 +81,6 @@ else
     do
 	case $1 in
 	-b) backup=true
-	    shift
 	    ;;
 	-s) send=true
 	    ;;
@@ -89,16 +94,23 @@ else
 	esac
 	shift
     done
+ 
     dir=$1;
-	
+   
           if [ -e $dir ]; then # File exist?
 
 		if [ -d $dir ]; then # File is a directory?
 
 			if [ -r $dir ]; then # Can we read file?
-			       	 generate_dir $dir $2 # we can do it, finally!
-				 if [ $backup = true ]; then backup $destination
-				 fi
+			    generate_dir $dir $2   # we can do it, finally!
+				 
+			    if [ $backup = true ]; then backup $2;
+			    fi
+			    if [ $send = true ]; then 
+				if [ $backup = true ]; then send;
+				else error 405 ;
+				fi
+			    fi
 			else
 				error 401
 			fi
