@@ -2,15 +2,14 @@
 
 # generating directories by cretion date of files
 function generate_dir {
-	if [ $# = 2 ]; then
+	if [ $# -eq 2 ]; then
 		new_dir=$2
 		if [ -e $new_dir ]; then    # destination director exists
 		  
 		    if [ -d $new_dir ]; then  # destination is a directiory
 		      
 			if [ -r $new_dir ]; then
-			  cd $dir
-			  search $new_dir;
+			   search $new_dir;
 		        else error 401
 		      
 			fi
@@ -19,13 +18,11 @@ function generate_dir {
 		    fi
 		else  
 		    mkdir $new_dir
-		    cd $dir
 		    search $new_dir;       
 	        fi
           else
 		new_dir='cache'
 		mkdir $new_dir
-		cd $dir
 		search $new_dir; 
 	fi
 }
@@ -33,7 +30,7 @@ function generate_dir {
 # searching files
 
 function search {
-    for file in *
+    for file in $dir/*
     do                   
 		cdate_year=`date +%Y -r $file`
 		if [ -d $new_dir/$cdate_year ]; then   
