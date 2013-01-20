@@ -37,6 +37,8 @@ Prosty skrypt segregujący pliki po dacie utworzenia. Sensowne zastosowanie ma w
     4 directories, 8 files
 
 ## Uruchamianie
-    bash fseg.sh [KATALOG_DO_SEGREGACJI] [KATALOG_POSEGREGOWANY]
+    bash fseg.sh [OPCJA] [KATALOG_DO_SEGREGACJI] [KATALOG_POSEGREGOWANY]
 
 ## Dodatkowe opcje
+    -b - tworzy backup posegregowanych plików
+    -m - przenosi segregowane pliki (domyślnie jest polecenie cp)
