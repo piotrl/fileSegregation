@@ -5,14 +5,18 @@ function generate_dir {
 	if [ $# = 2 ]; then
 		new_dir=$2
 		if [ -e $new_dir ]; then    # destination director exists
-		  if [ -d $new_dir ]; then  # destination is a directiory
-		      if [ -r $new_dir ]; then
+		  
+		    if [ -d $new_dir ]; then  # destination is a directiory
+		      
+			if [ -r $new_dir ]; then
 			  cd $dir
 			  search $new_dir;
 		        else error 401
-		      fi
+		      
+			fi
 		    else error 403
-		  fi
+		  
+		    fi
 		else  
 		    mkdir $new_dir
 		    cd $dir
@@ -33,11 +37,11 @@ function search {
     do                   
 		cdate_year=`date +%Y -r $file`
 		if [ -d $new_dir/$cdate_year ]; then   
-     		    cp $file $new_dir/$cdate_year/;
+     		    $action $file $new_dir/$cdate_year/;
 		    
 		else
 		    mkdir $new_dir/$cdate_year/
-		    cp $file $new_dir/$cdate_year/;
+		    $action $file $new_dir/$cdate_year/;
 		   
 		fi
     done
@@ -76,13 +80,13 @@ if [ $# -eq 0 ]; then
 	error 0
 else
     backup=false
-    send=false
+    action='cp'
     while [ $# -gt 0 ]   # options
     do
 	case $1 in
 	-b) backup=true
 	    ;;
-	-s) send=true
+	-m) action='mv'
 	    ;;
 	--) shift
 	    break
@@ -105,11 +109,6 @@ else
 			    generate_dir $dir $2   # we can do it, finally!
 				 
 			    if [ $backup = true ]; then backup $2;
-			    fi
-			    if [ $send = true ]; then 
-				if [ $backup = true ]; then send;
-				else error 405 ;
-				fi
 			    fi
 			else
 				error 401
