@@ -1,43 +1,21 @@
 #!/bin/bash
 
-# generating directories by cretion date of files
 function generate_dir {
 	if [ $# -eq 2 ]; then
 		new_dir=$2
-		if [ -e $new_dir ]; then    # destination director exists
-		  
-		    if [ -d $new_dir ]; then  # destination is a directiory
-		      
-			if [ -r $new_dir ]; then
-			   search $new_dir;
-		        else error 401
-		      
-			fi
-		    else error 403
-		  
-		    fi
-		else  
-		    mkdir $new_dir
-		    search $new_dir;       
-	        fi
-          else
+      	else
 		new_dir='cache'
-		mkdir $new_dir
-		search $new_dir; 
-	fi
-}
+	fi	
 
-# searching files
+# generating directories by cretion date of files
 
-function search {
     for file in $dir/*
     do                   
 		cdate_year=`date +%Y -r $file`
 		if [ -d $new_dir/$cdate_year ]; then   
      		    $action $file $new_dir/$cdate_year/;
-		    
 		else
-		    mkdir $new_dir/$cdate_year/
+		    mkdir -p $new_dir/$cdate_year/
 		    $action $file $new_dir/$cdate_year/;
 		   
 		fi
@@ -64,7 +42,7 @@ function error {
 		403) echo $0': Podany plik nie jest katalogiem';;
 		404) echo $0': Podany plik '$dir' nie istnieje';;
 		405) echo $0': Brak pliku do wyslania ';;
-	          *) 	 echo 'We like trains';;
+	          *) echo 'We like trains';;
 	esac
 }
 
