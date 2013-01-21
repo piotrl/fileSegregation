@@ -5,10 +5,12 @@ function generate_dir {
 	if [ $# -eq 2 ]; then
 		new_dir=$2
       else
-		new_dir='cache'
+		new_dir=$dir
 	fi
 
-    for file in $dir/*
+	files=`find $dir/* -type f`
+
+    for file in $files
     do
 		mdate_year=`date +%Y -r $file`
 		mdate_month=`date +%m -r $file`
