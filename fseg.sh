@@ -1,20 +1,31 @@
 #!/bin/bash
 
 function generate_dir {
+
 	if [ $# -eq 2 ]; then
 		new_dir=$2
-      	else
+      else
 		new_dir='cache'
-	fi	
+	fi
 
     for file in $dir/*
-    do                   
-		cdate_year=`date +%Y -r $file`
-		if [ -d $new_dir/$cdate_year ]; then   
-     		    $action $file $new_dir/$cdate_year/;
+    do
+		mdate_year=`date +%Y -r $file`
+		mdate_month=`date +%m -r $file`
+
+		if [ $downto_day = true ]; then
+			mdate_day=`date +%d -r $file`
 		else
-		    mkdir -p $new_dir/$cdate_year/
-		    $action $file $new_dir/$cdate_year/;
+			mdate_day=''
+		fi
+
+		path=$new_dir/$mdate_year/$mdate_month/$mdate_day
+
+		if [ -d $path ]; then
+     		    $action $file $path
+		else
+		    mkdir -p $path
+		    $action $file $path
 		fi
 	done
 }
@@ -36,7 +47,7 @@ function error {
 		401) echo $0': Brak dostępu do pliku lub katalogu ';;
 		403) echo $0': Podany plik nie jest katalogiem';;
 		404) echo $0': Podany plik '$dir' nie istnieje';;
-	        405) echo $0': Nieznana opcja '$option;;
+		405) echo $0': '$option': Nieznana opcja ';;
 		*) 	 echo 'We like trains';;
 	esac
 	exit 0
@@ -52,21 +63,19 @@ if [ $# -eq 0 ]; then
 else
 	backup=false
 	action='cp'
+	downto_day=false
 
 	while [ $# -gt 0 ]; do # options
 
 		case $1 in
-		-b) backup=true
-			;;
-		-m) action='mv'
-			;;
-		--) shift
-			break
-			;;
-		-*) error 400 $1
-			;;
-		*) break
-			;;
+			-b) backup=true;;
+			-m) action='mv';;
+			-d) downto_day=true;;
+			--) shift
+				break
+				;;
+			-*) error 405 $1;;
+			*) break;;
 		esac
 
 	shift
