@@ -13,7 +13,7 @@ function generate_dir {
 
 	if [ $# -eq 2 ]; then
 		new_dir=$2
-	else
+      else
 		new_dir=$dir
 	fi
 
@@ -23,8 +23,8 @@ function generate_dir {
 		files=`find $dir/* -maxdepth 0 -type f`
 	fi
 
-	for file in $files
-	do
+    for file in $files
+    do
 		mdate_year=`date +%Y -r $file`
 		mdate_month=`date +%m -r $file`
 
@@ -34,24 +34,23 @@ function generate_dir {
 			mdate_day=''
 		fi
 
-		if [ setting_backup = true ]; then
+		if [ $setting_backup = true ]; then
 			echo $mdate_year >> files_to_backup
 		fi
 
 		path=$new_dir/$mdate_year/$mdate_month/$mdate_day
 
 		if [ -d $path ]; then
-				$setting_action $file $path
+     		    $setting_action $file $path
 		else
-			mkdir -p $path
-			$setting_action $file $path
+		    mkdir -p $path
+		    $setting_action $file $path
 		fi
 	done
 }
 
 function backup {
 	# $new_dir	[ check in generate_dir ]
-
 	name='backup_'`date +%F`
 	b_file=`cat files_to_backup | uniq`
 	rm files_to_backup
