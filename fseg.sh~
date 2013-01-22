@@ -52,7 +52,7 @@ function backup {
 	rm file_to_backup
 	cd $new_dir
 	tar -cvzf $name.tar.gz $b_file
-	
+	if [ -e $name.tar.gz ]; then 
 }
 
 function help {
