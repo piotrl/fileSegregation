@@ -1,6 +1,9 @@
 # Segregacja plików
 Prosty skrypt segregujący pliki po dacie utworzenia. Sensowne zastosowanie ma w przypadku dużej ilości plików o losowych nazwach, np. zdjęć na karcie pamięci lub logów serwera;
 
+Domyślnie, segreguje katalogi wewnątrz wybranego katalogu, nie uwzględniając podkatalogów.
+Domyślna segregacja kopiuje pliki do nowych katalogów, nie naruszając oryginałów.
+
 ## TODO
 1. Dokumentacja funkcji (w komentarzach)
 
@@ -35,9 +38,10 @@ Prosty skrypt segregujący pliki po dacie utworzenia. Sensowne zastosowanie ma w
 	5 directories, 8 files
 
 ## Uruchamianie
-	bash fseg.sh [OPCJA] [KATALOG_DO_SEGREGACJI] [KATALOG_POSEGREGOWANY]
+	bash fseg.sh [OPCJA] [KATALOG_DO_SEGREGACJI] [NAZWA_KATALOGU_WYJSCIOWEGO]
 
 ## Dodatkowe opcje
 	-b : tworzy backup posegregowanych plików
-	-m : przenosi segregowane pliki (zamiast tylko kopiować)
 	-d : segreguje również po dniu ostatniej modyfikacji
+	-m : przenosi segregowane pliki (zamiast tylko kopiować)
+	-r : segreguje pliki w podkatalogach

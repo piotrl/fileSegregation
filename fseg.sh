@@ -8,7 +8,11 @@ function generate_dir {
 		new_dir=$dir
 	fi
 
-	files=`find $dir/* -type f`
+	if [ reccur = true ]; then
+		files=`find $dir/* -type f`
+	else
+		files=`find $dir/* -maxdepth 0 -type f`
+	fi
 
     for file in $files
     do
@@ -39,6 +43,7 @@ function backup {
 }
 
 function error {
+
 	code=$1
 	option=$2
 
@@ -66,6 +71,7 @@ else
 	backup=false
 	action='cp'
 	downto_day=false
+	reccur=false
 
 	while [ $# -gt 0 ]; do # options
 
@@ -73,6 +79,7 @@ else
 			-b) backup=true;;
 			-m) action='mv';;
 			-d) downto_day=true;;
+			-r) reccur=true;;
 			--) shift
 				break
 				;;
@@ -83,7 +90,7 @@ else
 	shift
 	done
 
-	dir=$1;
+	dir=$1
 
 	if [ -e $dir ]; then # File exist?
 
