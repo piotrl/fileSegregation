@@ -87,7 +87,9 @@ function error {
 		401) echo $0': Brak dostępu do pliku lub katalogu ';;
 		403) echo $0': Podany plik nie jest katalogiem';;
 		404) echo $0': Podany plik '$dir' nie istnieje';;
-		405) echo $0': '$option': Nieznana opcja ';;
+		405) echo $0': '$option': Nieznana opcja ' 
+			echo 'Spróbuj `fseg.sh -- help` dla uzyskania informacji.'
+			;;
 		*) 	 echo 'We like trains';;
 	esac
 	exit 0
